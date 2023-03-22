@@ -1,0 +1,12 @@
+name: "ChatGPT PR Code Review"
+description: "Get an explanation of code changes in a pull request and comment on it"
+inputs:
+  github-token:
+    description: "GitHub token"
+    required: true
+  openai-token:
+    description: "OpenAI API token"
+    required: true
+runs:
+  using: "node12"
+  main: "src/index.js"
