@@ -15,7 +15,7 @@ async function getDiff(prNumber, octokit, repo) {
 
 async function getExplanation(diff, openaiToken) {
     const chatGptApiUrl = 'https://api.openai.com/v1/chat/completions';
-    const prompt = `Explain the following code changes with as few words as possible:\n\n${codeSnippet}`;
+    const prompt = `Explain the following code changes with as few words as possible:\n\n${diff}`;
     try {
         const response = await axios.post(chatGptApiUrl, {
             model: "gpt-3.5-turbo",
