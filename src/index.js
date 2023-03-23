@@ -12,24 +12,42 @@ async function getDiff(prNumber, octokit, repo) {
     return diff;
 }
 
+
 async function getExplanation(diff, openaiToken) {
     const chatGptApiUrl = 'https://api.openai.com/v1/chat/completions';
-    const prompt = `Explain the following code changes with at least words as possible:\n\n${diff}`;
+    const prompt = `Explain the following code changes with as few words as possible:\n\n${codeSnippet}`;
+    try {
+        const response = await axios.post(chatGptApiUrl, {
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant that translates code changes into human-readable explanations."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            max_tokens: 100,
+            n: 1,
+            stop: null,
+            temperature: 0.5,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${openaiToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-    const response = await axios.post(chatGptApiUrl, {
-        prompt: prompt,
-        max_tokens: 100,
-        n: 1,
-        stop: null,
-        temperature: 0.5,
-    }, {
-        headers: {
-            'Authorization': `Bearer ${openaiToken}`,
-            'Content-Type': 'application/json'
+        if (response.data.choices && response.data.choices[0] && response.data.choices[0].message && response.data.choices[0].message.content) {
+            return (response.data.choices[0].message.content);
+        } else {
+            console.error('Error: Unexpected response format');
         }
-    });
-
-    return response.data.choices[0].text.trim();
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 async function commentOnPr(prNumber, explanation, octokit, repo) {
