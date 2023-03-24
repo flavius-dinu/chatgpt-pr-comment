@@ -4,6 +4,8 @@ This action takes as input a GIT_TOKEN and an OPENAI_TOKEN, sends the git diff t
 
 Optionally, you can specify a chatgpt model from this list: gpt-4, gpt-4-0314, gpt-4-32k, gpt-4-32k-0314, gpt-3.5-turbo, gpt-3.5-turbo-0301. 
 
+Keep in mind, that you need access in order to use gpt-4, and right now API access is currently in limited beta.
+
 By default gpt-3.5-turbo, will be used.
 
 ## Usage Example
@@ -21,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Review code
-        uses: flavius-dinu/chatgpt-pr-comment@0.6.0
+        uses: flavius-dinu/chatgpt-pr-comment@1.0.0
         with:
           github-token: ${{ secrets.GIT_TOKEN }}
           openai-token: ${{ secrets.OPENAI_TOKEN }}
@@ -45,5 +47,5 @@ jobs:
         with:
           github-token: ${{ secrets.GIT_TOKEN }}
           openai-token: ${{ secrets.OPENAI_TOKEN }}
-          chatgptmodel: "gpt-4"
+          chatgptmodel: "gpt-3.5-turbo-0301"
 ```
