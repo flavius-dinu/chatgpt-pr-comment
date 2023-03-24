@@ -13,12 +13,12 @@ async function getDiff(prNumber, octokit, repo) {
 }
 
 
-async function getExplanation(diff, openaiToken) {
+async function getExplanation(diff, openaiToken, model) {
     const chatGptApiUrl = 'https://api.openai.com/v1/chat/completions';
     const prompt = `Explain the following code changes with as few words as possible:\n\n${diff}`;
     try {
         const response = await axios.post(chatGptApiUrl, {
-            model: "gpt-3.5-turbo",
+            model: model,
             messages: [
                 {
                     role: "system",
@@ -63,12 +63,12 @@ async function run() {
     try {
         const token = core.getInput('github-token', { required: true });
         const openaiToken = core.getInput('openai-token', { required: true });
+        const model = core.getInput('model') || "gpt - 3.5 - turbo";
         const octokit = github.getOctokit(token);
         const prNumber = github.context.payload.pull_request.number;
         const repo = github.context.repo;
-
         const diff = await getDiff(prNumber, octokit, repo);
-        const explanation = await getExplanation(diff, openaiToken);
+        const explanation = await getExplanation(diff, openaiToken, model);
         await commentOnPr(prNumber, explanation, octokit, repo);
     } catch (error) {
         core.setFailed(error.message);
