@@ -63,7 +63,7 @@ async function run() {
     try {
         const token = core.getInput('github-token', { required: true });
         const openaiToken = core.getInput('openai-token', { required: true });
-        const model = core.getInput('model') || "gpt - 3.5 - turbo";
+        const model = core.getInput('model')
         const octokit = github.getOctokit(token);
         const prNumber = github.context.payload.pull_request.number;
         const repo = github.context.repo;
