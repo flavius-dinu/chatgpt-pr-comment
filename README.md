@@ -41,9 +41,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Review code
-        uses: flavius-dinu/chatgpt-pr-comment@0.6.0
+        uses: flavius-dinu/chatgpt-pr-comment@1.0.0
         with:
           github-token: ${{ secrets.GIT_TOKEN }}
           openai-token: ${{ secrets.OPENAI_TOKEN }}
-          model: 'gpt-4'
+          chatgptmodel: "gpt-4"
 ```
